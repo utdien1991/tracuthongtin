@@ -78,7 +78,18 @@ export const VerificationSlipPrint: React.FC<VerificationSlipPrintProps> = ({
             </div>
             <div>
               Nơi sinh (theo Giấy khai sinh): <strong>{student.birthPlace.detail}</strong>
-              <span className="block text-[11px] text-gray-700">Xã, tỉnh theo địa chỉ mới: <strong>{student.birthPlace.ward}</strong></span>
+              <span className="block text-[11px] text-gray-700">
+                Xã, tỉnh theo địa chỉ mới:{' '}
+                <strong>
+                  {student.birthPlace.ward === 'Đợi hội đồng sư phạm xác thực'
+                    ? 'Đợi hội đồng sư phạm xác thực'
+                    : student.birthPlace.province &&
+                      student.birthPlace.province !== 'Đợi hội đồng sư phạm xác thực' &&
+                      !student.birthPlace.ward.includes(student.birthPlace.province)
+                    ? `${student.birthPlace.ward}, ${student.birthPlace.province}`
+                    : student.birthPlace.ward}
+                </strong>
+              </span>
             </div>
             <div>
               Quê quán (địa chỉ cũ): <strong>{student.hometown.detail}</strong>

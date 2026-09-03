@@ -12,7 +12,7 @@ const SAMPLE_STUDENTS = [
   { cccd: '091211012066', name: 'Ngô Quốc Anh', class: '10T4' },
   { cccd: '091211000973', name: 'Trương Kiều Tuấn Anh', class: '10T4' },
   { cccd: '091311008103', name: 'Trần Hồng Duyên', class: '10T4' },
-  { cccd: '091211009476', name: 'Lê Quốc Khôi', class: '10T2' },
+  { cccd: '091211009476', name: 'Lê Quốc Khôi', class: '10T4' },
   { cccd: '091211018829', name: 'Ngô Minh Thuận', class: '10T4' },
   { cccd: '091311003492', name: 'Thạch Diệp Khánh Hân', class: '10T4' },
 ];

@@ -1,6 +1,6 @@
 {
   "name": "Tra Cứu Hồ Sơ Học Sinh",
-  "description": "Ứng dụng tra cứu và đối soát xác nhận thông tin học sinh theo số Căn cước công dân (CCCD) bảo mật thông tin cá nhân trường THPT Giồng Riềng.",
+  "description": "Ứng dụng tra cứu và đối soát xác nhận thông tin học sinh theo số Căn cước công dân (CCCD) bảo mật thông tin cá nhân trường THPT Giồng Riềng, hỗ trợ lưu trữ trực tuyến vào Google Sheet.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

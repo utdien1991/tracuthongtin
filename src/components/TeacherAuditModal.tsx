@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { VerificationRecord, StudentRecord } from '../types';
 import { STUDENTS_DATA } from '../data/studentsData';
-import { X, CheckCircle2, AlertTriangle, Download, Trash2, Clock, Search } from 'lucide-react';
+import {
+  X,
+  CheckCircle2,
+  AlertTriangle,
+  Download,
+  Trash2,
+  Clock,
+  Search,
+  FileSpreadsheet,
+} from 'lucide-react';
 
 interface TeacherAuditModalProps {
   isOpen: boolean;
@@ -9,6 +18,7 @@ interface TeacherAuditModalProps {
   verifications: Record<string, VerificationRecord>;
   onSelectStudentCCCD: (cccd: string) => void;
   onClearAll: () => void;
+  onOpenGoogleSheets: () => void;
 }
 
 export const TeacherAuditModal: React.FC<TeacherAuditModalProps> = ({
@@ -17,6 +27,7 @@ export const TeacherAuditModal: React.FC<TeacherAuditModalProps> = ({
   verifications,
   onSelectStudentCCCD,
   onClearAll,
+  onOpenGoogleSheets,
 }) => {
   const [filter, setFilter] = useState<'all' | 'correct' | 'error' | 'unverified'>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,6 +69,8 @@ export const TeacherAuditModal: React.FC<TeacherAuditModalProps> = ({
       'Họ và tên',
       'Lớp',
       'Số CCCD',
+      'Nơi sinh (GKS)',
+      'Xã, tỉnh nơi sinh mới',
       'Trạng thái đối soát',
       'Thời gian xác nhận',
       'Người xác nhận',
@@ -73,11 +86,22 @@ export const TeacherAuditModal: React.FC<TeacherAuditModalProps> = ({
         : v.status === 'confirmed_correct'
         ? 'Chính xác 100%'
         : 'Báo thông tin sai';
+      const birthNewStr =
+        s.birthPlace.ward === 'Đợi hội đồng sư phạm xác thực'
+          ? 'Đợi hội đồng sư phạm xác thực'
+          : s.birthPlace.province &&
+            s.birthPlace.province !== 'Đợi hội đồng sư phạm xác thực' &&
+            !s.birthPlace.ward.includes(s.birthPlace.province)
+          ? `${s.birthPlace.ward}, ${s.birthPlace.province}`
+          : s.birthPlace.ward;
+
       return [
         s.stt,
         `"${s.fullName}"`,
         s.classGroup,
         `"${s.idCard.number}"`,
+        `"${s.birthPlace.detail.replace(/"/g, '""')}"`,
+        `"${birthNewStr.replace(/"/g, '""')}"`,
         `"${statusText}"`,
         `"${v?.verifiedAt || ''}"`,
         `"${v?.verifiedBy || ''}"`,
@@ -199,14 +223,23 @@ export const TeacherAuditModal: React.FC<TeacherAuditModalProps> = ({
             </button>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
+            <button
+              id="btn-audit-open-google-sheets"
+              onClick={onOpenGoogleSheets}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer"
+              title="Lưu trữ và đồng bộ trực tuyến vào Google Sheet"
+            >
+              <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-600" />
+              <span>Lưu Google Sheet</span>
+            </button>
             <button
               onClick={exportCSV}
               className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
               title="Tải tệp Excel / CSV để GVCN cập nhật"
             >
               <Download className="h-3.5 w-3.5 text-slate-500" />
-              <span>Xuất file đối soát (CSV)</span>
+              <span>Xuất CSV</span>
             </button>
             {Object.keys(verifications).length > 0 && (
               <button

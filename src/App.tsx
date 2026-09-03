@@ -4,6 +4,7 @@ import { SearchBar } from './components/SearchBar';
 import { StudentProfile } from './components/StudentProfile';
 import { VerificationModal } from './components/VerificationModal';
 import { TeacherAuditModal } from './components/TeacherAuditModal';
+import { GoogleSheetsSyncModal } from './components/GoogleSheetsSyncModal';
 import { VerificationSlipPrint } from './components/VerificationSlipPrint';
 import { STUDENTS_DATA, findStudentByCCCD } from './data/studentsData';
 import {
@@ -31,6 +32,7 @@ export default function App() {
   const [verifications, setVerifications] = useState<Record<string, VerificationRecord>>({});
   const [modalType, setModalType] = useState<'correct' | 'error' | null>(null);
   const [isAuditOpen, setIsAuditOpen] = useState(false);
+  const [isGoogleSheetsOpen, setIsGoogleSheetsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Load verifications from localStorage
@@ -131,6 +133,7 @@ export default function App() {
         {/* Official School Header */}
         <Header
           onOpenAudit={() => setIsAuditOpen(true)}
+          onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
           auditCount={{
             confirmed: confirmedCount,
             reported: reportedCount,
@@ -292,6 +295,21 @@ export default function App() {
         verifications={verifications}
         onSelectStudentCCCD={handleSearch}
         onClearAll={handleClearAllVerifications}
+        onOpenGoogleSheets={() => {
+          setIsAuditOpen(false);
+          setIsGoogleSheetsOpen(true);
+        }}
+      />
+
+      {/* Google Sheets Cloud Storage & Sync Modal */}
+      <GoogleSheetsSyncModal
+        isOpen={isGoogleSheetsOpen}
+        onClose={() => setIsGoogleSheetsOpen(false)}
+        students={STUDENTS_DATA}
+        verifications={verifications}
+        onSyncSuccess={(res) => {
+          showToast(`Đã lưu trữ trực tuyến thành công ${res.updatedRows} hồ sơ lên Google Sheet!`);
+        }}
       />
     </div>
   );

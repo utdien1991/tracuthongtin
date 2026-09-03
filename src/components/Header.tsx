@@ -1,12 +1,17 @@
 import React from 'react';
-import { ShieldCheck, School, Lock } from 'lucide-react';
+import { ShieldCheck, School, Lock, FileSpreadsheet } from 'lucide-react';
 
 interface HeaderProps {
   onOpenAudit: () => void;
+  onOpenGoogleSheets: () => void;
   auditCount: { confirmed: number; reported: number; total: number };
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenAudit, auditCount }) => {
+export const Header: React.FC<HeaderProps> = ({
+  onOpenAudit,
+  onOpenGoogleSheets,
+  auditCount,
+}) => {
   return (
     <header className="border-b border-slate-200 bg-white shadow-xs">
       {/* Top Banner: Quốc hiệu & Tiêu ngữ */}
@@ -40,16 +45,26 @@ export const Header: React.FC<HeaderProps> = ({ onOpenAudit, auditCount }) => {
           </div>
 
           {/* Teacher / Auditor Indicator & Actions */}
-          <div className="flex items-center gap-4 text-sm text-slate-500 self-end sm:self-center">
-            <div className="hidden md:flex flex-col items-end leading-tight">
+          <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-slate-500 self-end sm:self-center flex-wrap">
+            <div className="hidden lg:flex flex-col items-end leading-tight mr-1">
               <span className="font-medium text-slate-700 text-xs">Cán bộ phụ trách</span>
               <span className="text-[11px] text-slate-400">Tổ Quản lý hồ sơ & GVCN</span>
             </div>
 
             <button
+              id="btn-open-google-sheets"
+              onClick={onOpenGoogleSheets}
+              className="inline-flex items-center gap-2 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900 transition-colors shadow-2xs cursor-pointer"
+              title="Lưu trữ trực tuyến vào Google Sheet"
+            >
+              <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
+              <span>Google Sheet</span>
+            </button>
+
+            <button
               id="btn-teacher-audit"
               onClick={onOpenAudit}
-              className="inline-flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors shadow-2xs"
+              className="inline-flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer"
               title="Xem tiến độ đối soát hồ sơ lớp"
             >
               <ShieldCheck className="h-4 w-4 text-blue-700" />

@@ -301,7 +301,13 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({
                       Xã, tỉnh theo địa chỉ mới:
                     </span>
                     <span className="text-sm sm:text-base font-semibold text-slate-800">
-                      {student.birthPlace.ward}
+                      {student.birthPlace.ward === 'Đợi hội đồng sư phạm xác thực'
+                        ? 'Đợi hội đồng sư phạm xác thực'
+                        : student.birthPlace.province &&
+                          student.birthPlace.province !== 'Đợi hội đồng sư phạm xác thực' &&
+                          !student.birthPlace.ward.includes(student.birthPlace.province)
+                        ? `${student.birthPlace.ward}, ${student.birthPlace.province}`
+                        : student.birthPlace.ward}
                     </span>
                   </div>
                 </div>
